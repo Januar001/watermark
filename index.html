@@ -1,0 +1,220 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mass Watermark Generator</title>
+    <style>
+        body {
+            font-family: 'Poppins', sans-serif;
+            background-color: #f0f4f8;
+            color: #333;
+            text-align: center;
+            margin: 0;
+            padding: 0;
+        }
+
+        h1 {
+            margin-top: 20px;
+            font-size: 2.5em;
+            color: #2c3e50;
+        }
+
+        .container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            margin: 20px;
+        }
+
+        .uploader {
+            margin: 20px 0;
+        }
+
+        input[type="file"] {
+            display: none;
+        }
+
+        label {
+            background-color: #3498db;
+            color: white;
+            padding: 12px 30px;
+            border-radius: 25px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+            font-size: 1.1em;
+        }
+
+        label:hover {
+            background-color: #2980b9;
+        }
+
+        #downloadAll {
+            margin-top: 20px;
+            background-color: #e74c3c;
+            color: white;
+            padding: 12px 30px;
+            border-radius: 25px;
+            cursor: pointer;
+            font-size: 1.1em;
+            display: none;
+            transition: background-color 0.3s ease;
+        }
+
+        #downloadAll:hover {
+            background-color: #c0392b;
+        }
+
+        .gallery {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 20px;
+            justify-content: center;
+            padding: 20px;
+        }
+
+        .image-container {
+            position: relative;
+            display: inline-block;
+            width: 200px; /* Thumbnail width */
+            height: 150px; /* Thumbnail height */
+            overflow: hidden;
+            border-radius: 15px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+            background-color: white;
+            transition: transform 0.3s ease;
+        }
+
+        .image-container:hover {
+            transform: scale(1.05);
+        }
+
+        .image-container img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover; /* Thumbnail cropping */
+        }
+
+        .watermark-text {
+            position: absolute;
+            font-size: 12px; /* Smaller watermark for thumbnail */
+            font-weight: bold;
+            color: rgba(255, 255, 255, 0.85);
+            text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.7);
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            white-space: nowrap;
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+
+    <h1>Mass Watermark Generator</h1>
+
+    <div class="container">
+        <div class="uploader">
+            <label for="imageUpload">Select Images to Watermark</label>
+            <input type="file" id="imageUpload" multiple accept="image/*">
+        </div>
+
+        <button id="downloadAll">Download All Watermarked Images</button>
+    </div>
+
+    <div class="gallery" id="gallery"></div>
+
+    <script>
+        const imageUpload = document.getElementById('imageUpload');
+        const gallery = document.getElementById('gallery');
+        const downloadAllButton = document.getElementById('downloadAll');
+
+        imageUpload.addEventListener('change', handleFiles);
+
+        function handleFiles() {
+            const files = imageUpload.files;
+            gallery.innerHTML = ''; // Clear previous images
+            const zip = new JSZip();
+
+            for (let i = 0; i < files.length; i++) {
+                const file = files[i];
+                const reader = new FileReader();
+
+                reader.onload = function (event) {
+                    const imgElement = new Image();
+                    imgElement.src = event.target.result;
+
+                    imgElement.onload = function () {
+                        // Create thumbnail container
+                        const imageContainer = document.createElement('div');
+                        imageContainer.classList.add('image-container');
+
+                        const watermark = document.createElement('div');
+                        watermark.classList.add('watermark-text');
+                        watermark.innerText = 'Follow instagram kami di @asteria.digitama'; // Replace with your watermark text
+
+                        imageContainer.appendChild(imgElement);
+                        imageContainer.appendChild(watermark);
+                        gallery.appendChild(imageContainer);
+
+                        // Process full-size image for download
+                        createWatermarkedImage(imgElement, watermark.innerText, zip, file.name);
+                    };
+                };
+
+                reader.readAsDataURL(file);
+            }
+
+            downloadAllButton.style.display = 'block';
+            downloadAllButton.onclick = function () {
+                zip.generateAsync({ type: 'blob' }).then(function (content) {
+                    saveAs(content, 'watermarked_images.zip');
+                });
+            };
+        }
+
+        function createWatermarkedImage(imgElement, watermarkText, zip, fileName) {
+            const canvas = document.createElement('canvas');
+            const ctx = canvas.getContext('2d');
+
+            // Set canvas size to image's original size
+            const originalImg = new Image();
+            originalImg.src = imgElement.src;
+
+            originalImg.onload = function() {
+                canvas.width = originalImg.naturalWidth;
+                canvas.height = originalImg.naturalHeight;
+
+                // Draw the original image onto the canvas
+                ctx.drawImage(originalImg, 0, 0);
+
+                // Set watermark font size as a percentage of the image's dimensions
+                const fontSize = Math.min(canvas.width, canvas.height) * 0.035; // Adjust the percentage as needed
+                ctx.font = `${fontSize}px Arial`;
+                ctx.fillStyle = 'rgba(255, 255, 255, 0.7)';
+                ctx.textAlign = 'center';
+                ctx.textBaseline = 'middle';
+                ctx.shadowColor = 'rgba(0, 0, 0, 0.7)';
+                ctx.shadowBlur = 10;
+
+                // Calculate the position to center the watermark
+                const x = canvas.width / 2;
+                const y = canvas.height / 2;
+
+                // Draw the watermark at the center of the canvas
+                ctx.fillText(watermarkText, x, y);
+
+                // Convert canvas to blob and add to the zip file
+                canvas.toBlob(function(blob) {
+                    zip.file(fileName, blob);
+                }, 'image/jpeg');
+            };
+        }
+    </script>
+
+    <!-- Include JSZip library for generating ZIP files -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.7.1/jszip.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/FileSaver.js/2.0.5/FileSaver.min.js"></script>
+
+</body>
+</html>
