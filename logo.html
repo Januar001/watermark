@@ -9,47 +9,100 @@
             font-family: 'Poppins', sans-serif;
             background-color: #f0f4f8;
             color: #333;
-            text-align: center;
             margin: 0;
             padding: 0;
         }
 
+        .header {
+            text-align: center;
+            padding: 30px 20px 10px;
+        }
+
         h1 {
-            margin-top: 30px;
+            margin: 0;
             font-size: 2.2em;
             color: #2c3e50;
         }
+        p.subtitle {
+            color: #7f8c8d;
+            margin-top: 5px;
+        }
 
-        .container {
+        .main-wrapper {
             display: flex;
-            flex-direction: column;
-            align-items: center;
+            flex-wrap: wrap;
+            gap: 20px;
+            max-width: 1100px;
             margin: 20px auto;
-            max-width: 600px;
+            padding: 0 20px;
+            align-items: flex-start;
+        }
+
+        .left-panel {
+            flex: 1;
+            min-width: 300px;
             background: white;
-            padding: 30px;
+            padding: 25px;
             border-radius: 15px;
             box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
         }
 
-        .settings-card {
-            width: 100%;
-            margin-bottom: 25px;
-            text-align: left;
-            padding: 20px;
-            background: #f8fafc;
-            border-radius: 10px;
-            border: 1px solid #e2e8f0;
+        .right-panel {
+            flex: 1;
+            min-width: 300px;
+            position: sticky;
+            top: 20px;
         }
 
-        .settings-card h3 {
+        .preview-card {
+            background: white;
+            padding: 20px;
+            border-radius: 15px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
+            text-align: center;
+        }
+
+        .preview-card h3 {
             margin-top: 0;
+            color: #2c3e50;
             font-size: 1.2em;
+            margin-bottom: 15px;
+        }
+
+        #mainPreviewCanvas {
+            width: 100%;
+            height: auto;
+            max-height: 400px;
+            object-fit: contain;
+            border-radius: 8px;
+            border: 1px dashed #bdc3c7;
+            background-color: #e2e8f0;
+            background-image: linear-gradient(45deg, #cbd5e1 25%, transparent 25%, transparent 75%, #cbd5e1 75%, #cbd5e1), 
+                              linear-gradient(45deg, #cbd5e1 25%, transparent 25%, transparent 75%, #cbd5e1 75%, #cbd5e1);
+            background-size: 20px 20px;
+            background-position: 0 0, 10px 10px;
+        }
+
+        h3.section-title {
+            margin-top: 0;
+            font-size: 1.1em;
             color: #2c3e50;
             margin-bottom: 15px;
             border-bottom: 2px solid #3498db;
             display: inline-block;
             padding-bottom: 5px;
+        }
+
+        .setting-group {
+            margin-bottom: 20px;
+        }
+
+        .setting-group label {
+            font-weight: bold;
+            color: #34495e;
+            display: block;
+            margin-bottom: 8px;
+            font-size: 0.9em;
         }
 
         .radio-group {
@@ -61,29 +114,59 @@
         .radio-group label {
             cursor: pointer;
             font-weight: bold;
-            color: #34495e;
             display: flex;
             align-items: center;
             gap: 5px;
+            font-size: 1em;
         }
 
-        input[type="text"] {
+        input[type="text"], select {
             width: 100%;
             padding: 10px 15px;
             border: 1px solid #cbd5e1;
             border-radius: 8px;
-            font-size: 1em;
+            font-size: 0.95em;
             box-sizing: border-box;
             outline: none;
             transition: border-color 0.3s;
         }
 
-        input[type="text"]:focus {
+        input[type="text"]:focus, select:focus {
             border-color: #3498db;
         }
 
-        .upload-group {
-            margin-top: 10px;
+        /* Slider Styles */
+        .slider-container {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        input[type="range"] {
+            flex: 1;
+            cursor: pointer;
+        }
+        .slider-val {
+            font-size: 0.9em;
+            background: #f1f5f9;
+            padding: 3px 8px;
+            border-radius: 4px;
+            min-width: 40px;
+            text-align: center;
+            border: 1px solid #e2e8f0;
+        }
+
+        .color-picker-container {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        input[type="color"] {
+            border: none;
+            width: 35px;
+            height: 35px;
+            border-radius: 5px;
+            cursor: pointer;
+            padding: 0;
         }
 
         /* Custom File Input Styling */
@@ -94,14 +177,17 @@
         .btn {
             background-color: #3498db;
             color: white;
-            padding: 12px 30px;
-            border-radius: 25px;
+            padding: 12px 20px;
+            border-radius: 8px;
             cursor: pointer;
-            transition: background-color 0.3s ease;
-            font-size: 1.1em;
+            transition: all 0.3s ease;
+            font-size: 1em;
             border: none;
             display: inline-block;
-            font-family: inherit;
+            font-weight: bold;
+            text-align: center;
+            width: 100%;
+            box-sizing: border-box;
         }
 
         .btn:hover {
@@ -110,7 +196,8 @@
 
         .btn-secondary {
             background-color: #95a5a6;
-            padding: 8px 20px;
+            width: auto;
+            padding: 8px 15px;
             font-size: 0.9em;
         }
 
@@ -118,15 +205,16 @@
             background-color: #7f8c8d;
         }
 
-        #downloadAll {
-            margin-top: 20px;
+        .btn-success {
             background-color: #27ae60;
-            display: none;
-            width: 100%;
+        }
+        .btn-success:hover {
+            background-color: #2ecc71;
         }
 
-        #downloadAll:hover {
-            background-color: #2ecc71;
+        #downloadAll {
+            margin-top: 15px;
+            display: none;
         }
 
         #logoPreview img {
@@ -136,104 +224,144 @@
             border: 1px dashed #bdc3c7;
             padding: 5px;
             background: white;
+            display: block;
         }
 
         .gallery {
             display: flex;
             flex-wrap: wrap;
-            gap: 20px;
+            gap: 15px;
             justify-content: center;
-            padding: 20px;
+            padding: 20px 0;
+            border-top: 1px solid #e2e8f0;
+            margin-top: 20px;
         }
 
         .image-container {
             position: relative;
             display: inline-block;
-            width: 200px;
-            height: 150px;
+            width: 120px;
+            height: 120px;
             overflow: hidden;
-            border-radius: 10px;
-            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+            border-radius: 8px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
             background-color: white;
-            transition: transform 0.3s ease;
         }
 
-        .image-container:hover {
-            transform: scale(1.05);
-        }
-
-        .image-container img.main-img {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-        }
-
-        /* Canvas thumbnail styling */
         .image-container canvas {
             width: 100%;
             height: 100%;
             object-fit: cover;
         }
 
-        /* Hilangkan CSS overlay lama karena kita akan pakai live canvas */
+        hr {
+            border: 0;
+            height: 1px;
+            background: #e2e8f0;
+            margin: 25px 0;
+        }
     </style>
 </head>
 <body>
 
-    <h1>Mass Watermark Generator</h1>
+    <div class="header">
+        <h1>Mass Watermark Generator</h1>
+        <p class="subtitle">Tambahkan watermark ke banyak foto sekaligus dengan mudah</p>
+    </div>
 
-    <div class="container">
-        <!-- Pengaturan Watermark -->
-        <div class="settings-card">
-            <h3>Pengaturan Watermark</h3>
-            
+    <div class="main-wrapper">
+        <!-- Panel Kiri: Pengaturan -->
+        <div class="left-panel">
+            <h3 class="section-title">1. Tipe Watermark</h3>
             <div class="radio-group">
                 <label><input type="radio" name="wmType" value="text" checked> Teks</label>
                 <label><input type="radio" name="wmType" value="logo"> Logo/Gambar</label>
             </div>
 
-            <!-- Input Teks -->
-            <div id="textSettings">
-                <input type="text" id="watermarkText" value="Follow instagram kami di @asteria.digitama" placeholder="Masukkan teks watermark di sini...">
+            <!-- Setelan Teks -->
+            <div id="textSettings" class="setting-group">
+                <input type="text" id="watermarkText" value="Follow @asteria.digitama" placeholder="Masukkan teks watermark...">
+                <div class="color-picker-container" style="margin-top: 10px;">
+                    <label style="margin:0;">Warna Teks:</label>
+                    <input type="color" id="wmColor" value="#ffffff">
+                </div>
             </div>
 
-            <!-- Input Logo -->
-            <div id="logoSettings" style="display: none;">
-                <label for="logoUpload" class="btn btn-secondary">Pilih Logo Watermark</label>
+            <!-- Setelan Logo -->
+            <div id="logoSettings" class="setting-group" style="display: none;">
+                <label for="logoUpload" class="btn btn-secondary">📁 Pilih Logo Watermark</label>
                 <input type="file" id="logoUpload" accept="image/*">
                 <div id="logoPreview"></div>
             </div>
 
-            <!-- Tambahan: Posisi & Repeat -->
-            <div class="setting-group" id="positionGroup" style="margin-top: 20px; padding-top: 15px; border-top: 1px solid #e2e8f0;">
-                <label for="wmPosition" style="font-weight:bold; color:#34495e; display:block; margin-bottom:8px;">Posisi Watermark:</label>
-                <select id="wmPosition" style="width: 100%; padding: 10px; border-radius: 8px; border: 1px solid #cbd5e1; outline: none; font-size: 1em;">
-                    <option value="center">Tengah</option>
+            <hr>
+
+            <h3 class="section-title">2. Posisi & Gaya</h3>
+            
+            <div class="setting-group">
+                <label style="display: flex; align-items: center; gap: 8px; cursor: pointer;">
+                    <input type="checkbox" id="wmRepeat" style="width: 16px; height: 16px;"> 
+                    Ulangi (Tile) ke Seluruh Gambar
+                </label>
+            </div>
+
+            <div class="setting-group" id="positionGroup">
+                <label for="wmPosition">Posisi Penempatan:</label>
+                <select id="wmPosition">
+                    <option value="center">Tengah (Center)</option>
                     <option value="top-left">Kiri Atas</option>
                     <option value="top-right">Kanan Atas</option>
                     <option value="bottom-left">Kiri Bawah</option>
                     <option value="bottom-right">Kanan Bawah</option>
                 </select>
             </div>
-            
-            <div class="setting-group checkbox-group" style="margin-top: 15px;">
-                <label style="cursor: pointer; font-weight: bold; color: #34495e; display: flex; align-items: center; gap: 8px;">
-                    <input type="checkbox" id="wmRepeat" style="width: 18px; height: 18px;"> Ulangi (Tile) Watermark ke Seluruh Gambar
-                </label>
+
+            <div class="setting-group">
+                <label for="wmSize">Ukuran Watermark (<span id="sizeValText">5</span>%)</label>
+                <div class="slider-container">
+                    <input type="range" id="wmSize" min="1" max="100" value="5">
+                </div>
+            </div>
+
+            <div class="setting-group">
+                <label for="wmOpacity">Transparansi / Opacity (<span id="opacityValText">70</span>%)</label>
+                <div class="slider-container">
+                    <input type="range" id="wmOpacity" min="10" max="100" value="70">
+                </div>
+            </div>
+
+            <div class="setting-group">
+                <label for="wmRotation">Rotasi / Kemiringan (<span id="rotationValText">-30</span>°)</label>
+                <div class="slider-container">
+                    <input type="range" id="wmRotation" min="-180" max="180" value="-30">
+                </div>
+            </div>
+
+            <hr>
+
+            <h3 class="section-title">3. Terapkan ke Target</h3>
+            <div class="setting-group">
+                <label for="imageUpload" class="btn">🖼 Pilih Gambar Target (Bisa Banyak)</label>
+                <input type="file" id="imageUpload" multiple accept="image/*">
+            </div>
+
+            <button id="downloadAll" class="btn btn-success">⬇ Download Semua (ZIP)</button>
+
+            <!-- Tempat Thumbnail Gambar Asli (Bawah) -->
+            <div class="gallery" id="gallery"></div>
+        </div>
+
+        <!-- Panel Kanan: Live Preview -->
+        <div class="right-panel">
+            <div class="preview-card">
+                <h3>Live Preview</h3>
+                <canvas id="mainPreviewCanvas"></canvas>
+                <p style="font-size: 0.85em; color: #7f8c8d; margin-top: 10px; margin-bottom: 0;">
+                    Ini adalah contoh tampilan. Upload gambar target di sebelah kiri untuk melihat hasil aslinya.
+                </p>
             </div>
         </div>
-
-        <!-- Area Upload Gambar Target -->
-        <div class="uploader">
-            <label for="imageUpload" class="btn">Pilih Gambar Target (Bisa Lebih Dari 1)</label>
-            <input type="file" id="imageUpload" multiple accept="image/*">
-        </div>
-
-        <button id="downloadAll" class="btn">⬇ Download Semua (ZIP)</button>
     </div>
-
-    <!-- Gallery Preview -->
-    <div class="gallery" id="gallery"></div>
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.7.1/jszip.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/FileSaver.js/2.0.5/FileSaver.min.js"></script>
@@ -244,21 +372,58 @@
         const textSettings = document.getElementById('textSettings');
         const logoSettings = document.getElementById('logoSettings');
         const watermarkText = document.getElementById('watermarkText');
+        const wmColor = document.getElementById('wmColor');
         const logoUpload = document.getElementById('logoUpload');
         const logoPreview = document.getElementById('logoPreview');
         const imageUpload = document.getElementById('imageUpload');
         const gallery = document.getElementById('gallery');
         const downloadAllButton = document.getElementById('downloadAll');
         
-        // New DOM Elements
         const wmPosition = document.getElementById('wmPosition');
         const wmRepeat = document.getElementById('wmRepeat');
         const positionGroup = document.getElementById('positionGroup');
+        const wmSize = document.getElementById('wmSize');
+        const wmOpacity = document.getElementById('wmOpacity');
+        const wmRotation = document.getElementById('wmRotation');
+        
+        const mainPreviewCanvas = document.getElementById('mainPreviewCanvas');
+        const mainPreviewCtx = mainPreviewCanvas.getContext('2d');
 
         // State variables
         let currentMode = 'text';
         let customLogoImage = null;
-        let selectedImages = []; // Menyimpan gambar yang sudah diupload untuk live preview
+        let selectedImages = [];
+        let dummyImage = new Image();
+
+        // Generate Dummy Background untuk awal
+        function generateDummyImage() {
+            const tempCanvas = document.createElement('canvas');
+            tempCanvas.width = 800;
+            tempCanvas.height = 600;
+            const ctx = tempCanvas.getContext('2d');
+            
+            // Draw background
+            ctx.fillStyle = '#64748b';
+            ctx.fillRect(0, 0, 800, 600);
+            
+            // Draw text
+            ctx.fillStyle = '#94a3b8';
+            ctx.font = 'bold 60px Arial';
+            ctx.textAlign = 'center';
+            ctx.textBaseline = 'middle';
+            ctx.fillText('FOTO CONTOH', 400, 300);
+            
+            dummyImage.src = tempCanvas.toDataURL();
+            dummyImage.onload = () => updatePreviews();
+        }
+        generateDummyImage();
+
+        // Update teks nilai slider
+        function updateSliderLabels() {
+            document.getElementById('sizeValText').innerText = wmSize.value;
+            document.getElementById('opacityValText').innerText = wmOpacity.value;
+            document.getElementById('rotationValText').innerText = wmRotation.value;
+        }
 
         // Toggle UI Teks vs Logo
         radios.forEach(radio => {
@@ -271,20 +436,31 @@
                     textSettings.style.display = 'none';
                     logoSettings.style.display = 'block';
                 }
-                renderGallery(); // Update live preview
+                updatePreviews();
             });
         });
 
-        // Trigger Live Preview saat setting berubah
-        [wmPosition, wmRepeat, watermarkText].forEach(el => {
-            el.addEventListener('input', renderGallery);
-            el.addEventListener('change', renderGallery);
+        // Event Listener untuk semua pengaturan (Live Update)
+        const inputs = [wmPosition, wmRepeat, watermarkText, wmSize, wmOpacity, wmRotation, wmColor];
+        inputs.forEach(el => {
+            el.addEventListener('input', () => {
+                updateSliderLabels();
+                updatePreviews();
+            });
         });
 
-        // Toggle dropdown posisi jika repeat aktif
+        // Toggle disable posisi jika repeat aktif
         wmRepeat.addEventListener('change', (e) => {
             wmPosition.disabled = e.target.checked;
             positionGroup.style.opacity = e.target.checked ? '0.5' : '1';
+            // Ubah rotasi default jadi miring jika di-repeat, lurus jika single (opsional biar bagus)
+            if(e.target.checked) {
+                wmRotation.value = -30;
+            } else {
+                wmRotation.value = 0;
+            }
+            updateSliderLabels();
+            updatePreviews();
         });
 
         // Handle Logo Upload
@@ -301,7 +477,7 @@
                         const imgPreview = document.createElement('img');
                         imgPreview.src = event.target.result;
                         logoPreview.appendChild(imgPreview);
-                        renderGallery(); // Update live preview
+                        updatePreviews();
                     };
                 };
                 reader.readAsDataURL(file);
@@ -313,7 +489,7 @@
             const files = e.target.files;
             if(files.length === 0) return;
 
-            selectedImages = []; // Reset batch
+            selectedImages = [];
             let loadedCount = 0;
 
             for (let i = 0; i < files.length; i++) {
@@ -326,7 +502,7 @@
                         selectedImages.push({ file: file, img: img });
                         loadedCount++;
                         if (loadedCount === files.length) {
-                            renderGallery(); // Render semua thumbnail setelah semua selesai dimuat
+                            updatePreviews();
                         }
                     };
                     img.src = event.target.result;
@@ -335,76 +511,102 @@
             }
         });
 
-        // Render Thumbnail Preview (Live update)
-        function renderGallery() {
+        // Master function untuk mengupdate Live Preview Utama & Gallery
+        function updatePreviews() {
+            // 1. Update Main Big Preview
+            const imgToPreview = selectedImages.length > 0 ? selectedImages[0].img : dummyImage;
+            
+            // Set canvas size matching image aspect ratio, max width ~800 for performance
+            const previewMaxW = 800;
+            const ratio = imgToPreview.width / imgToPreview.height;
+            if (imgToPreview.width > imgToPreview.height) {
+                mainPreviewCanvas.width = previewMaxW;
+                mainPreviewCanvas.height = previewMaxW / ratio;
+            } else {
+                mainPreviewCanvas.height = previewMaxW;
+                mainPreviewCanvas.width = previewMaxW * ratio;
+            }
+            
+            drawWatermark(mainPreviewCtx, imgToPreview, mainPreviewCanvas.width, mainPreviewCanvas.height);
+
+            // 2. Update Gallery Thumbnails
             gallery.innerHTML = ''; 
-
-            if (selectedImages.length === 0) {
-                downloadAllButton.style.display = 'none';
-                return;
-            }
-
-            if (currentMode === 'logo' && !customLogoImage) {
-                gallery.innerHTML = '<p style="color: #e74c3c; font-weight: bold;">Harap upload logo watermark terlebih dahulu.</p>';
-                downloadAllButton.style.display = 'none';
-                return;
-            }
-
-            downloadAllButton.style.display = 'block';
-
-            selectedImages.forEach(item => {
-                const container = document.createElement('div');
-                container.classList.add('image-container');
-
-                const canvas = document.createElement('canvas');
-                // Set ukuran canvas kecil khusus preview agar tidak lag
-                const maxThumbWidth = 300; 
-                const ratio = item.img.width / item.img.height;
+            if (selectedImages.length > 0) {
+                downloadAllButton.style.display = 'block';
                 
-                if (item.img.width > item.img.height) {
-                    canvas.width = maxThumbWidth;
-                    canvas.height = maxThumbWidth / ratio;
-                } else {
-                    canvas.height = maxThumbWidth;
-                    canvas.width = maxThumbWidth * ratio;
-                }
+                selectedImages.forEach(item => {
+                    const container = document.createElement('div');
+                    container.classList.add('image-container');
 
-                const ctx = canvas.getContext('2d');
-                drawWatermark(ctx, item.img, canvas.width, canvas.height);
-                
-                container.appendChild(canvas);
-                gallery.appendChild(container);
-            });
+                    const thumbCanvas = document.createElement('canvas');
+                    const thumbW = 200;
+                    const thumbRatio = item.img.width / item.img.height;
+                    
+                    if (item.img.width > item.img.height) {
+                        thumbCanvas.width = thumbW;
+                        thumbCanvas.height = thumbW / thumbRatio;
+                    } else {
+                        thumbCanvas.height = thumbW;
+                        thumbCanvas.width = thumbW * thumbRatio;
+                    }
+
+                    const tCtx = thumbCanvas.getContext('2d');
+                    drawWatermark(tCtx, item.img, thumbCanvas.width, thumbCanvas.height);
+                    
+                    container.appendChild(thumbCanvas);
+                    gallery.appendChild(container);
+                });
+            } else {
+                downloadAllButton.style.display = 'none';
+            }
         }
 
-        // Inti Fungsi Gambar (Dipakai untuk Preview dan Export Full Size)
+        // Inti Fungsi Menggambar Gambar & Watermark ke Canvas
         function drawWatermark(ctx, baseImg, canvasWidth, canvasHeight) {
+            // Bersihkan dan gambar ulang foto dasar
+            ctx.clearRect(0, 0, canvasWidth, canvasHeight);
             ctx.drawImage(baseImg, 0, 0, canvasWidth, canvasHeight);
+
+            // Cek jika mode logo tapi belum ada logo
+            if (currentMode === 'logo' && !customLogoImage) return;
 
             const isRepeat = wmRepeat.checked;
             const pos = wmPosition.value;
-            const pad = Math.min(canvasWidth, canvasHeight) * 0.05; // 5% padding dari tepi
+            const pad = Math.min(canvasWidth, canvasHeight) * 0.05; 
+            
+            // Ambil value pengaturan
+            const opacity = wmOpacity.value / 100;
+            const rotationAngle = wmRotation.value * Math.PI / 180;
+            const scaleSize = wmSize.value / 100;
+
+            // Set global transparency
+            ctx.globalAlpha = opacity;
 
             if (currentMode === 'text') {
                 const wmText = watermarkText.value || 'Watermark';
-                const fontSize = Math.min(canvasWidth, canvasHeight) * 0.05; 
+                // Base size is 20% of min dimension, modified by slider (which acts as a multiplier)
+                const baseFontSize = Math.min(canvasWidth, canvasHeight) * 0.5; 
+                const finalFontSize = baseFontSize * scaleSize;
                 
-                ctx.font = `bold ${fontSize}px Arial`;
-                ctx.fillStyle = 'rgba(255, 255, 255, 0.7)'; 
-                ctx.shadowColor = 'rgba(0, 0, 0, 0.8)';
-                ctx.shadowBlur = Math.max(3, fontSize * 0.1);
+                ctx.font = `bold ${finalFontSize}px Arial`;
+                ctx.fillStyle = wmColor.value; 
+                // Shadow agar teks tetap terbaca meski di background terang/gelap
+                ctx.shadowColor = 'rgba(0, 0, 0, 0.6)';
+                ctx.shadowBlur = Math.max(2, finalFontSize * 0.1);
+                ctx.shadowOffsetX = 2;
+                ctx.shadowOffsetY = 2;
 
                 if (isRepeat) {
                     ctx.textAlign = 'center';
                     ctx.textBaseline = 'middle';
                     const textMetrics = ctx.measureText(wmText);
+                    // Jarak antar teks tile
                     const stepX = textMetrics.width + (canvasWidth * 0.1);
-                    const stepY = fontSize * 3;
+                    const stepY = finalFontSize * 3;
 
                     ctx.save();
-                    // Rotasi kanvas ke tengah untuk efek diagonal
                     ctx.translate(canvasWidth/2, canvasHeight/2);
-                    ctx.rotate(-Math.PI / 6); // -30 Derajat
+                    ctx.rotate(rotationAngle);
                     ctx.translate(-canvasWidth/2, -canvasHeight/2);
 
                     const startX = -canvasWidth;
@@ -420,29 +622,49 @@
                     ctx.restore();
                 } else {
                     let x, y;
-                    if (pos === 'center') { x = canvasWidth/2; y = canvasHeight/2; ctx.textAlign = 'center'; ctx.textBaseline = 'middle'; }
-                    else if (pos === 'top-left') { x = pad; y = pad; ctx.textAlign = 'left'; ctx.textBaseline = 'top'; }
-                    else if (pos === 'top-right') { x = canvasWidth - pad; y = pad; ctx.textAlign = 'right'; ctx.textBaseline = 'top'; }
-                    else if (pos === 'bottom-left') { x = pad; y = canvasHeight - pad; ctx.textAlign = 'left'; ctx.textBaseline = 'bottom'; }
-                    else if (pos === 'bottom-right') { x = canvasWidth - pad; y = canvasHeight - pad; ctx.textAlign = 'right'; ctx.textBaseline = 'bottom'; }
+                    ctx.textAlign = 'center'; 
+                    ctx.textBaseline = 'middle';
 
-                    ctx.fillText(wmText, x, y);
+                    // Tentukan titik anchor (x,y)
+                    if (pos === 'center') { x = canvasWidth/2; y = canvasHeight/2; }
+                    else if (pos === 'top-left') { 
+                        ctx.textAlign = 'left'; ctx.textBaseline = 'top';
+                        x = pad; y = pad; 
+                    }
+                    else if (pos === 'top-right') { 
+                        ctx.textAlign = 'right'; ctx.textBaseline = 'top';
+                        x = canvasWidth - pad; y = pad; 
+                    }
+                    else if (pos === 'bottom-left') { 
+                        ctx.textAlign = 'left'; ctx.textBaseline = 'bottom';
+                        x = pad; y = canvasHeight - pad; 
+                    }
+                    else if (pos === 'bottom-right') { 
+                        ctx.textAlign = 'right'; ctx.textBaseline = 'bottom';
+                        x = canvasWidth - pad; y = canvasHeight - pad; 
+                    }
+
+                    // Gambar dengan rotasi
+                    ctx.save();
+                    ctx.translate(x, y);
+                    ctx.rotate(rotationAngle);
+                    ctx.fillText(wmText, 0, 0);
+                    ctx.restore();
                 }
 
             } else if (currentMode === 'logo') {
                 const logoRatio = customLogoImage.width / customLogoImage.height;
-                const logoWidth = canvasWidth * 0.25; // Default ukuran logo 25% dari gambar
-                const logoHeight = logoWidth / logoRatio;
-
-                ctx.globalAlpha = 0.6; // Transparansi logo
+                // Base width is 100% of canvas width, modified by slider
+                const finalLogoWidth = canvasWidth * scaleSize * 2; 
+                const finalLogoHeight = finalLogoWidth / logoRatio;
 
                 if (isRepeat) {
-                    const stepX = logoWidth * 1.5;
-                    const stepY = logoHeight * 1.5;
+                    const stepX = finalLogoWidth * 1.5;
+                    const stepY = finalLogoHeight * 1.5;
 
                     ctx.save();
                     ctx.translate(canvasWidth/2, canvasHeight/2);
-                    ctx.rotate(-Math.PI / 6);
+                    ctx.rotate(rotationAngle);
                     ctx.translate(-canvasWidth/2, -canvasHeight/2);
 
                     const startX = -canvasWidth;
@@ -452,29 +674,42 @@
 
                     for (let x = startX; x < endX; x += stepX) {
                         for (let y = startY; y < endY; y += stepY) {
-                            ctx.drawImage(customLogoImage, x, y, logoWidth, logoHeight);
+                            ctx.drawImage(customLogoImage, x, y, finalLogoWidth, finalLogoHeight);
                         }
                     }
                     ctx.restore();
                 } else {
-                    let lx, ly;
-                    if (pos === 'center') { lx = (canvasWidth - logoWidth)/2; ly = (canvasHeight - logoHeight)/2; }
-                    else if (pos === 'top-left') { lx = pad; ly = pad; }
-                    else if (pos === 'top-right') { lx = canvasWidth - logoWidth - pad; ly = pad; }
-                    else if (pos === 'bottom-left') { lx = pad; ly = canvasHeight - logoHeight - pad; }
-                    else if (pos === 'bottom-right') { lx = canvasWidth - logoWidth - pad; ly = canvasHeight - logoHeight - pad; }
+                    let cx, cy; // Center of the logo for rotation
+                    if (pos === 'center') { cx = canvasWidth/2; cy = canvasHeight/2; }
+                    else if (pos === 'top-left') { cx = pad + finalLogoWidth/2; cy = pad + finalLogoHeight/2; }
+                    else if (pos === 'top-right') { cx = canvasWidth - pad - finalLogoWidth/2; cy = pad + finalLogoHeight/2; }
+                    else if (pos === 'bottom-left') { cx = pad + finalLogoWidth/2; cy = canvasHeight - pad - finalLogoHeight/2; }
+                    else if (pos === 'bottom-right') { cx = canvasWidth - pad - finalLogoWidth/2; cy = canvasHeight - pad - finalLogoHeight/2; }
 
-                    ctx.drawImage(customLogoImage, lx, ly, logoWidth, logoHeight);
+                    ctx.save();
+                    ctx.translate(cx, cy);
+                    ctx.rotate(rotationAngle);
+                    // Gambar dari titik offset tengah
+                    ctx.drawImage(customLogoImage, -finalLogoWidth/2, -finalLogoHeight/2, finalLogoWidth, finalLogoHeight);
+                    ctx.restore();
                 }
-                ctx.globalAlpha = 1.0;
             }
+            // Reset state
+            ctx.globalAlpha = 1.0;
+            ctx.shadowColor = 'transparent';
         }
 
         // Setup tombol download ZIP
         downloadAllButton.onclick = function () {
             if(selectedImages.length === 0) return;
 
-            downloadAllButton.innerText = "Memproses ZIP...";
+            // Pastikan jika mode logo, logo harus ada
+            if (currentMode === 'logo' && !customLogoImage) {
+                alert("Pilih logo watermark terlebih dahulu!");
+                return;
+            }
+
+            downloadAllButton.innerText = "⏳ Memproses ZIP...";
             downloadAllButton.style.backgroundColor = "#e67e22";
             
             const zip = new JSZip();
@@ -501,7 +736,7 @@
                             downloadAllButton.style.backgroundColor = "#27ae60";
                         });
                     }
-                }, 'image/jpeg', 0.90);
+                }, 'image/jpeg', 0.95); // Kualitas 95%
             });
         };
     </script>
