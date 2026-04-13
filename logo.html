@@ -5,6 +5,10 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Mass Watermark Generator</title>
     <style>
+        * {
+            box-sizing: border-box;
+        }
+
         body {
             font-family: 'Poppins', sans-serif;
             background-color: #f0f4f8;
@@ -277,6 +281,7 @@
             font-weight: bold;
             transition: all 0.2s ease;
             text-align: center;
+            width: 100%;
         }
 
         .btn-download-single:hover {
@@ -289,6 +294,55 @@
             height: 1px;
             background: #e2e8f0;
             margin: 25px 0;
+        }
+
+        /* --- MOBILE RESPONSIVE STYLES --- */
+        @media screen and (max-width: 768px) {
+            .header {
+                padding: 20px 15px 5px;
+            }
+
+            h1 {
+                font-size: 1.8em;
+            }
+
+            .main-wrapper {
+                flex-direction: column; /* Mengubah susunan menjadi atas-bawah */
+                padding: 0 15px;
+            }
+
+            .left-panel {
+                order: 2; /* Pengaturan pindah ke bawah */
+                padding: 15px;
+                width: 100%;
+            }
+
+            .right-panel {
+                order: 1; /* Preview pindah ke atas */
+                position: relative; /* Menghilangkan efek sticky agar tidak diam di layar */
+                top: 0;
+                width: 100%;
+            }
+
+            .radio-group {
+                gap: 10px;
+            }
+
+            /* Penyesuaian Thumbnail Galeri di HP */
+            .gallery {
+                gap: 10px;
+            }
+
+            .image-container {
+                width: calc(50% - 5px); /* Membagi 2 kolom pada layar HP */
+                max-width: 160px;
+            }
+
+            .canvas-wrapper {
+                width: 100%;
+                height: auto;
+                aspect-ratio: 1 / 1; /* Memastikan thumbnail tetap persegi */
+            }
         }
     </style>
 </head>
@@ -387,7 +441,7 @@
                 <h3>Live Preview</h3>
                 <canvas id="mainPreviewCanvas"></canvas>
                 <p style="font-size: 0.85em; color: #7f8c8d; margin-top: 10px; margin-bottom: 0;">
-                    Ini adalah contoh tampilan. Upload gambar target di sebelah kiri untuk melihat hasil aslinya.
+                    Ini adalah contoh tampilan. Upload gambar target untuk melihat hasil aslinya.
                 </p>
             </div>
         </div>
